@@ -127,9 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="DIRECTIVES.txt" />
     <Text Include="OPTAB.txt" />
     <Text Include="REGISTERS.txt" />
     <Text Include="SYMTAB.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FUNCTIONS\CODES.cpp" />
+    <ClCompile Include="Start.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
