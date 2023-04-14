@@ -18,5 +18,11 @@
     <Text Include="OPTAB.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="REGISTERS.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SYMTAB.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
