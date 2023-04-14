@@ -1,6 +1,14 @@
 #include<iostream>
 #include <string>
-
+class linestring{
+private:
+	string line[3];
+public:
+	linestring() {
+		line[0] = line[1] = line[2] = "EMPTY";
+	}
+	void readcols();
+};
 
 class LOCCTR {
 private:
