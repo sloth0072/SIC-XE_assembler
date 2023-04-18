@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="OPTAB.txt">
+    <Text Include="Resources\Data\OPTAB.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="REGISTERS.txt">
+    <Text Include="Resources\Data\REGISTERS.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="SYMTAB.txt">
+    <Text Include="Resources\Data\SYMTAB.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="DIRECTIVES.txt">
+    <Text Include="Resources\Data\DIRECTIVES.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
@@ -32,12 +32,12 @@
     <ClCompile Include="Start.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FUNCTIONS\CODES.cpp">
+    <ClCompile Include="Resources\FUNCTIONS\CODES.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="Resources\Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
