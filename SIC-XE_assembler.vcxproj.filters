@@ -27,12 +27,14 @@
     <Text Include="Resources\Data\DIRECTIVES.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Resources\Intermediate_File.txt" />
+    <Text Include="Resources\Intermediate.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Start.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\FUNCTIONS\CODES.cpp">
+    <ClCompile Include="filereading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

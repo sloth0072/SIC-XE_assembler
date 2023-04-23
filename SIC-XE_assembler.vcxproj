@@ -131,9 +131,11 @@
     <Text Include="Resources\Data\OPTAB.txt" />
     <Text Include="Resources\Data\REGISTERS.txt" />
     <Text Include="Resources\Data\SYMTAB.txt" />
+    <Text Include="Resources\Intermediate.txt" />
+    <Text Include="Resources\Intermediate_File.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Resources\FUNCTIONS\CODES.cpp" />
+    <ClCompile Include="filereading.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>
   <ItemGroup>
