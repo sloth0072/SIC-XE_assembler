@@ -19,8 +19,8 @@ Pass1Reader::Pass1Reader() {
 	CreateFileasStringVector(file_reader, Data_File);
 	CreateFileasStringVector(OP_tab, OP_File);
 	Section_Counter = 1;
-	SYM_File.open(SYM_Tab, std::ios::app);
-	Inter_File.open(Intermediate, std::ios::app);
+	SYM_File.open(SYM_Tab);
+	Inter_File.open(Intermediate);
 	lineReader();
 }
 bool Pass1Reader::CheckIfOPCode(std::string word) {
@@ -182,7 +182,8 @@ void Pass1Reader::lineReader()
 			// write a function to store the data in new symbol file;
 			//
 
-			SYM_File.write((char*)"NEW", sizeof("NEW"));
+			SYM_File<<"NEW";
+			SYM_File << std::endl;
 			for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
 				SYM_File << (*i).SYM_NAME<<" "<<(*i).SYM_ADDRESS<< std::endl;
 			}
@@ -232,6 +233,8 @@ void Pass1Reader::lineReader()
 		std::cout << "The line being processed is : " << line + 1 << "\n\n\n\n\n\n";
 
 	}
+	SYM_File << "NEW";
+	SYM_File << std::endl;
 	for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
 		SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
 	}
