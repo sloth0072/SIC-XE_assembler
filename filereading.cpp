@@ -12,17 +12,28 @@ SYMBOL::SYMBOL() {
 
 
 Pass1Reader::Pass1Reader() {
+
+
 	file_reader = "./Input/input1.txt";
 	OP_tab = "./Resources/Data/OPTAB.txt";
 	Intermediate = "./Resources/Intermediate.txt";
 	SYM_Tab = "./Resources/Data/SYMTAB.txt";
+	Directory = "./Resources/Data/";
+
+
 	CreateFileasStringVector(file_reader, Data_File);
 	CreateFileasStringVector(OP_tab, OP_File);
+
+
 	Section_Counter = 1;
+
 	SYM_File.open(SYM_Tab);
+
 	Inter_File.open(Intermediate);
+
 	lineReader();
 }
+
 bool Pass1Reader::CheckIfOPCode(std::string word) {
 	std::vector<std::string> OP_line;
 	for (auto i = OP_File.begin(); i < OP_File.end(); i++) {
@@ -33,6 +44,7 @@ bool Pass1Reader::CheckIfOPCode(std::string word) {
 	}
 	return false;
 }
+
 std::string Pass1Reader::SizeOfOPCode(std::string OP_Code) {
 	for (auto i = OP_File.begin(); i < OP_File.end(); i++) {
 		std::vector<std::string> OP_line;
@@ -136,17 +148,49 @@ void Pass1Reader::lineReader()
 			LOCCTR += 3;
 		}
 		else if (check == 1) {
+			//EXTREF AND EXTDEF HAS SEPARATE TABLES
 			LOCCTR_LINES.push_back(LOCCTR);
-			for (int symbols = 1; symbols < Column_Reader.size(); symbols++) {
-				SYMBOL temp;
-				temp.SYM_NAME = RemoveAllSpecicalChar(Column_Reader[symbols]);
-				temp.SYM_ADDRESS = -1;
-				SYM_TABLE.push_back(temp);
+			std::ofstream EXTREF_File, EXTDEF_File;
+
+			if (Column_Reader[0] == "EXTDEF")
+			{
+				for (int symbols = 1; symbols < Column_Reader.size(); symbols++) {
+					SYMBOL temp;
+					temp.SYM_NAME = RemoveAllSpecicalChar(Column_Reader[symbols]);
+					temp.SYM_ADDRESS = "0";
+					EXTDEF.push_back(temp);
+				}
+				SYMBOL temp = SYM_TABLE.back();
+				EXTDEF_File.open(Directory + temp.SYM_NAME + "_EXTDEF.txt");
+				for (auto i = EXTDEF.begin(); i < EXTDEF.end(); i++) {
+					EXTDEF_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
+				}
+
 			}
+			else if (Column_Reader[0] == "EXTREF") {
+				for (int symbols = 1; symbols < Column_Reader.size(); symbols++) {
+					SYMBOL temp;
+					temp.SYM_NAME = RemoveAllSpecicalChar(Column_Reader[symbols]);
+					temp.SYM_ADDRESS = "0";
+					EXTREF.push_back(temp);
+				}
+				SYMBOL temp = SYM_TABLE.back();
+				EXTREF_File.open(Directory + temp.SYM_NAME + "_EXTREF.txt");
+				for (auto i = EXTREF.begin(); i < EXTREF.end(); i++) {
+					EXTREF_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
+				}
+				EXTREF.clear();
+			}
+
 		}
 		else if (check == 2) {
 			LOCCTR_LINES.push_back(-1);
 			std::cout << "PROGRAM PROCESSING IS COMPLETE" << std::endl << std::endl;
+			for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
+				SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
+			}
+			Intermediate_File_Creator();
+
 		}
 		else if (check == 3) {
 			SYMBOL temp;
@@ -173,25 +217,20 @@ void Pass1Reader::lineReader()
 			else {
 				SYM_TABLE.push_back(temp);
 			}
-			
+
 		}
 		else if (check == 5) {
-
+			//Updated to have EXTREF AND EXTDEF
 			// We have to clear symbol table also ;
 			// we need to also have symbol to be used again in the new CSECT;
 			// write a function to store the data in new symbol file;
-			//
-
-			SYM_File<<"NEW";
-			SYM_File << std::endl;
-			for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
-				SYM_File << (*i).SYM_NAME<<" "<<(*i).SYM_ADDRESS<< std::endl;
-			}
-			SYM_TABLE.clear();
 			SYMBOL temp;
 			temp.SYM_NAME = Column_Reader[0];
-			temp.SYM_ADDRESS = "0";
+			temp.SYM_ADDRESS = "0000";
 			SYM_TABLE.push_back(temp);
+
+
+
 			Section_Size.push_back(LOCCTR);
 			Section_Counter++;
 			LOCCTR = 0;
@@ -233,12 +272,7 @@ void Pass1Reader::lineReader()
 		std::cout << "The line being processed is : " << line + 1 << "\n\n\n\n\n\n";
 
 	}
-	SYM_File << "NEW";
-	SYM_File << std::endl;
-	for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
-		SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
-	}
-	Intermediate_File_Creator();
+
 }
 
 

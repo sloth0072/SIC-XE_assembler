@@ -41,8 +41,10 @@ protected:
 	std::vector<std::string> Column_Reader;
 	std::vector<std::string> Data_File, OP_File;
 	//Variables created to store the locations of the files 
-	std::string file_reader, OP_tab;
+	std::string file_reader, OP_tab, Directory;
 	std::string SYM_Tab, Intermediate;
+
+	
 	std::ofstream SYM_File, Inter_File;
 	std::vector<SYMBOL> SYM_TABLE;
 	// This is the location counter required to create the intermediate file and sym tab file
@@ -53,6 +55,8 @@ protected:
 
 
 	// SYM_TABLE needs to be built for each csect
+	std::vector<SYMBOL> EXTREF,EXTDEF;
+
 
 
 public:

@@ -21,12 +21,10 @@
     <Text Include="Resources\Data\REGISTERS.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Resources\Data\SYMTAB.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Resources\Data\DIRECTIVES.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Resources\Data\SYMTAB.txt" />
     <Text Include="Resources\Intermediate.txt" />
   </ItemGroup>
   <ItemGroup>
