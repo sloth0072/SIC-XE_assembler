@@ -27,7 +27,6 @@
     <Text Include="Resources\Data\DIRECTIVES.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Resources\Intermediate_File.txt" />
     <Text Include="Resources\Intermediate.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -35,6 +34,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="filereading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\CODES\Pass1Codes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

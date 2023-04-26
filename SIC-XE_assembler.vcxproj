@@ -132,10 +132,10 @@
     <Text Include="Resources\Data\REGISTERS.txt" />
     <Text Include="Resources\Data\SYMTAB.txt" />
     <Text Include="Resources\Intermediate.txt" />
-    <Text Include="Resources\Intermediate_File.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="filereading.cpp" />
+    <ClCompile Include="Resources\CODES\Pass1Codes.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>
   <ItemGroup>

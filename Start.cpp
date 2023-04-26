@@ -1,9 +1,7 @@
 #include <iostream>
-#include "Header.h"
+#include "Resources\Header.h"
 
 int main() {
-	
-
-	
+	Pass1Reader Pass;
 	return 0;
 }
