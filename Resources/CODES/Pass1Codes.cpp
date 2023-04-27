@@ -95,12 +95,12 @@ int DecStringtoDec(std::string Dec_String) {
 
 std::string decToHexa(int n)
 {
-	if (n == 0) {
-		return "0";
-	}
+	
 	// ans string to store hexadecimal number
 	std::string ans = "";
-
+	if (n == 0) {
+		ans="000000";
+	}
 	while (n != 0) {
 		// remainder variable to store remainder
 		int rem = 0;
@@ -131,6 +131,62 @@ std::string decToHexa(int n)
 		i++;
 		j--;
 	}
+	if (ans.size() == 1) {
+		ans = "00000" + ans;
+	}
+	else if (ans.size() == 2) {
+		ans = "0000" + ans;
+	}
+	else if (ans.size() == 3) {
+		ans = "000" + ans;
+	}
+	else if (ans.size() == 4) {
+		ans = "00" + ans;
+	}
+	else if (ans.size() == 5) {
+		ans = "0" + ans;
+	}
+	else if (ans.size() == 6) {
+		ans = ans;
+	}
+	return ans;
+}
+std::string decToHexaString(int n)
+{
+
+	// ans string to store hexadecimal number
+	std::string ans = "";
+	while (n != 0) {
+		// remainder variable to store remainder
+		int rem = 0;
+
+		// ch variable to store each character
+		char ch;
+		// storing remainder in rem variable.
+		rem = n % 16;
+
+		// check if temp < 10
+		if (rem < 10) {
+			ch = rem + 48;
+		}
+		else {
+			ch = rem + 55;
+		}
+
+		// updating the ans string with the character variable
+		ans += ch;
+		n = n / 16;
+	}
+
+	// reversing the ans string to get the final result
+	int i = 0, j = ans.size() - 1;
+	while (i <= j)
+	{
+		std::swap(ans[i], ans[j]);
+		i++;
+		j--;
+	}
+
 	return ans;
 }
 

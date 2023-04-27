@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="filereading.cpp" />
+    <ClCompile Include="Inter_File_Reader.cpp" />
     <ClCompile Include="Resources\CODES\Pass1Codes.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>

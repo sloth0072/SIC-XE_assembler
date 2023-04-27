@@ -37,6 +37,9 @@
     <ClCompile Include="Resources\CODES\Pass1Codes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Inter_File_Reader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resources\Header.h">

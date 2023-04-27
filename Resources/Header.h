@@ -4,7 +4,7 @@
 #include<string>
 #include<vector>
 #include <sstream>
-
+using namespace std;
 
 
 class SYMBOL {
@@ -13,7 +13,7 @@ public:
 	SYMBOL();
 };
 
-
+std::string decToHexaString(int n);
 
 void CreateFileasStringVector(std::string File_Path, std::vector<std::string>& File_String);
 
@@ -50,8 +50,6 @@ protected:
 	// This is the location counter required to create the intermediate file and sym tab file
 	unsigned int LOCCTR;
 	std::vector<int> LOCCTR_LINES;
-	int Section_Counter;
-	std::vector<int>Section_Size;
 
 
 	// SYM_TABLE needs to be built for each csect
@@ -60,7 +58,6 @@ protected:
 
 
 public:
-	friend void ReadWordsFromLine(std::string& Obj1, std::vector<std::string>& Obj2);
 	Pass1Reader();
 	bool CheckIfOPCode(std::string word);
 	std::string SizeOfOPCode(std::string OP_Code);
@@ -71,5 +68,47 @@ public:
 
 	void lineReader();
 	void Intermediate_File_Creator();
+
+	~Pass1Reader();
+	void UpdateBaseValue();
+
+};
+
+class OP_Codes {
+public:
+	string OBJ_Code, Location;
+};
+
+class Pass2Reader {
+private:
+	vector<string> Inter_File, SYM_File, EXTREF, EXTDEF, LOCATIONS, Line_Reader,Next_Line, OP_File;
+	vector<OP_Codes> OBJ_File;
+	string PC_Value, BASE_Value;
+public:
+	Pass2Reader();
+	void line_by_line();
+	string ValueOfWord();
+	int TypeChecker();
+	bool CheckIfOPCode(std::string word);
+
+	string ValueOfByte();
+
+	string OP_Code_Value(string,string);
+	
+	string Flags_Value(string,string);
+	
+	string Displacement_Value(string);
+	
+	string ValueOfOPCode(std::string OP_Code);
+
+	
+	string Address_Value(string);
+
+
+	string SearchInSymTab_ReturnAddress(string);
+
+	bool SearchInSymTab_ifPresent(string VARIABLE);
+	
+	
 
 };

@@ -24,9 +24,6 @@ Pass1Reader::Pass1Reader() {
 	CreateFileasStringVector(file_reader, Data_File);
 	CreateFileasStringVector(OP_tab, OP_File);
 
-
-	Section_Counter = 1;
-
 	SYM_File.open(SYM_Tab);
 
 	Inter_File.open(Intermediate);
@@ -91,27 +88,26 @@ int Pass1Reader::DirectiveChecker() {
 	else if (Word1 == "BASE") {
 		return 8;
 	}
-	std::string Word2 = Column_Reader[1];
 	if (Word1 == "EXTREF" || Word1 == "EXTDEF")
 		return 1;
+	if (Word1 == "END")
+		return 2;
+	std::string Word2 = Column_Reader[1];
+
+	if (Word2 == "START")
+		return 3;
 	else
-		if (Word1 == "END")
-			return 2;
+		if (Word2 == "WORD" || Word2 == "BYTE" || Word2 == "RESW" || Word2 == "RESB")
+			return 4;
 		else
-			if (Word2 == "START")
-				return 3;
+			if (Word2 == "CSECT")
+				return 5;
 			else
-				if (Word2 == "WORD" || Word2 == "BYTE" || Word2 == "RESW" || Word2 == "RESB")
-					return 4;
+				if (CheckIfOPCode(RemoveAllSpecicalChar(Word1)))
+					return 7;
 				else
-					if (Word2 == "CSECT")
-						return 5;
-					else
-						if (CheckIfOPCode(RemoveAllSpecicalChar(Word1)))
-							return 7;
-						else
-							if (CheckIfOPCode(RemoveAllSpecicalChar(Word2)))
-								return 6;
+					if (CheckIfOPCode(RemoveAllSpecicalChar(Word2)))
+						return 6;
 
 	return -1;
 
@@ -165,6 +161,7 @@ void Pass1Reader::lineReader()
 				for (auto i = EXTDEF.begin(); i < EXTDEF.end(); i++) {
 					EXTDEF_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
 				}
+				EXTDEF_File.close();
 
 			}
 			else if (Column_Reader[0] == "EXTREF") {
@@ -180,14 +177,20 @@ void Pass1Reader::lineReader()
 					EXTREF_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
 				}
 				EXTREF.clear();
+				EXTREF_File.close();
 			}
 
 		}
 		else if (check == 2) {
-			LOCCTR_LINES.push_back(-1);
+			LOCCTR_LINES.push_back(NULL);
 			std::cout << "PROGRAM PROCESSING IS COMPLETE" << std::endl << std::endl;
 			for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
-				SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
+				if ((i) == SYM_TABLE.end() - 1) {
+					SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS;
+				}
+				else {
+					SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
+				}
 			}
 			Intermediate_File_Creator();
 
@@ -230,9 +233,6 @@ void Pass1Reader::lineReader()
 			SYM_TABLE.push_back(temp);
 
 
-
-			Section_Size.push_back(LOCCTR);
-			Section_Counter++;
 			LOCCTR = 0;
 			LOCCTR_LINES.push_back(LOCCTR);
 
@@ -262,8 +262,16 @@ void Pass1Reader::lineReader()
 		}
 		else if (check == 8)
 		{
+			SYMBOL temp;
+			temp.SYM_NAME = Column_Reader[0];
+			temp.SYM_ADDRESS = "";
 			LOCCTR_LINES.push_back(LOCCTR);
+			temp.SYM_NAME = Column_Reader[1];
+			temp.SYM_ADDRESS = "";
+
 			std::cout << "BASE IS DECLARED AT: " << decToHexa(LOCCTR) << " ADDRESS STATEMENT\n\n\n\n\n\n";
+
+
 		}
 		else if (check == -1) {
 			std::cout << "ERROR HAS OCCURED WHILE UPDATING LOCCTR PER LINE \n\n\n\n\n\n\n";
@@ -282,8 +290,16 @@ void Pass1Reader::Intermediate_File_Creator() {
 		Inter_Lines.push_back(decToHexa(LOCCTR_LINES[i]) + " " + Data_File[i]);
 	}
 	for (auto j = Inter_Lines.begin(); j < Inter_Lines.end(); j++) {
-		Inter_File << (*j) << std::endl;
+		if ((j) == Inter_Lines.end() - 1)
+		{
+			Inter_File << (*j);
+		}
+		else {
+			Inter_File << (*j) << std::endl;
+		}
 	}
 }
 
-
+Pass1Reader::~Pass1Reader() {
+	SYM_File.close(); Inter_File.close();
+}
