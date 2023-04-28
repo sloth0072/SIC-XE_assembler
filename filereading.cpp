@@ -24,9 +24,9 @@ Pass1Reader::Pass1Reader() {
 	CreateFileasStringVector(file_reader, Data_File);
 	CreateFileasStringVector(OP_tab, OP_File);
 
-	SYM_File.open(SYM_Tab);
+	SYM_File.open(SYM_Tab, std::fstream::out);
 
-	Inter_File.open(Intermediate);
+	Inter_File.open(Intermediate, std::fstream::out);
 
 	lineReader();
 }
@@ -52,6 +52,7 @@ std::string Pass1Reader::SizeOfOPCode(std::string OP_Code) {
 			}
 		}
 	}
+	return "";
 }
 bool Pass1Reader::CheckIfSYMTABLE(std::string word) {
 	for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
@@ -82,32 +83,27 @@ int Pass1Reader::VariableSize() {
 }
 int Pass1Reader::DirectiveChecker() {
 	std::string Word1 = Column_Reader[0];
-	if (Word1 == "RSUB") {
-		return 0;
-	}
-	else if (Word1 == "BASE") {
+
+	if (Word1 == "BASE") {
 		return 8;
 	}
 	if (Word1 == "EXTREF" || Word1 == "EXTDEF")
 		return 1;
 	if (Word1 == "END")
 		return 2;
+	if (CheckIfOPCode(RemoveAllSpecicalChar(Word1)))
+		return 7;
 	std::string Word2 = Column_Reader[1];
 
 	if (Word2 == "START")
 		return 3;
-	else
-		if (Word2 == "WORD" || Word2 == "BYTE" || Word2 == "RESW" || Word2 == "RESB")
-			return 4;
-		else
-			if (Word2 == "CSECT")
-				return 5;
-			else
-				if (CheckIfOPCode(RemoveAllSpecicalChar(Word1)))
-					return 7;
-				else
-					if (CheckIfOPCode(RemoveAllSpecicalChar(Word2)))
-						return 6;
+
+	if (Word2 == "WORD" || Word2 == "BYTE" || Word2 == "RESW" || Word2 == "RESB")
+		return 4;
+	if (Word2 == "CSECT")
+		return 5;
+	if (CheckIfOPCode(RemoveAllSpecicalChar(Word2)))
+		return 6;
 
 	return -1;
 
@@ -136,6 +132,7 @@ void Pass1Reader::lineReader()
 		// 6 - LOOP SYMBOL
 		// 7 - NORMAL STATEMENT
 		// 8 - BASE
+
 
 
 		int check = DirectiveChecker();
@@ -185,12 +182,9 @@ void Pass1Reader::lineReader()
 			LOCCTR_LINES.push_back(NULL);
 			std::cout << "PROGRAM PROCESSING IS COMPLETE" << std::endl << std::endl;
 			for (auto i = SYM_TABLE.begin(); i < SYM_TABLE.end(); i++) {
-				if ((i) == SYM_TABLE.end() - 1) {
-					SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS;
-				}
-				else {
-					SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
-				}
+
+				SYM_File << (*i).SYM_NAME << " " << (*i).SYM_ADDRESS << std::endl;
+
 			}
 			Intermediate_File_Creator();
 
@@ -229,7 +223,7 @@ void Pass1Reader::lineReader()
 			// write a function to store the data in new symbol file;
 			SYMBOL temp;
 			temp.SYM_NAME = Column_Reader[0];
-			temp.SYM_ADDRESS = "0000";
+			temp.SYM_ADDRESS = "0";
 			SYM_TABLE.push_back(temp);
 
 
@@ -262,15 +256,6 @@ void Pass1Reader::lineReader()
 		}
 		else if (check == 8)
 		{
-			SYMBOL temp;
-			temp.SYM_NAME = Column_Reader[0];
-			temp.SYM_ADDRESS = "";
-			LOCCTR_LINES.push_back(LOCCTR);
-			temp.SYM_NAME = Column_Reader[1];
-			temp.SYM_ADDRESS = "";
-
-			std::cout << "BASE IS DECLARED AT: " << decToHexa(LOCCTR) << " ADDRESS STATEMENT\n\n\n\n\n\n";
-
 
 		}
 		else if (check == -1) {
@@ -290,15 +275,11 @@ void Pass1Reader::Intermediate_File_Creator() {
 		Inter_Lines.push_back(decToHexa(LOCCTR_LINES[i]) + " " + Data_File[i]);
 	}
 	for (auto j = Inter_Lines.begin(); j < Inter_Lines.end(); j++) {
-		if ((j) == Inter_Lines.end() - 1)
-		{
-			Inter_File << (*j);
-		}
-		else {
-			Inter_File << (*j) << std::endl;
-		}
+
+		Inter_File << (*j) << std::endl;
 	}
 }
+
 
 Pass1Reader::~Pass1Reader() {
 	SYM_File.close(); Inter_File.close();

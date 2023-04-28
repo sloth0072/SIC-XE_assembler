@@ -5,7 +5,15 @@
 #include<vector>
 #include <sstream>
 using namespace std;
-
+class Registers {
+public:
+	string Reg_Name;
+	int Reg_No;
+	Registers(string x, int t) {
+		Reg_Name = x;
+		Reg_No = t;
+	}
+};
 
 class SYMBOL {
 public:
@@ -70,19 +78,23 @@ public:
 	void Intermediate_File_Creator();
 
 	~Pass1Reader();
-	void UpdateBaseValue();
+
 
 };
 
 class OP_Codes {
 public:
 	string OBJ_Code, Location;
+	
 };
 
 class Pass2Reader {
 private:
-	vector<string> Inter_File, SYM_File, EXTREF, EXTDEF, LOCATIONS, Line_Reader,Next_Line, OP_File;
+	vector<string> Inter_File, SYM_File, LOCATIONS, Line_Reader,Next_Line, OP_File;
 	vector<OP_Codes> OBJ_File;
+	vector<OP_Codes> EXTREF;
+	vector<Registers> Reg;
+	fstream OUT_File;
 	string PC_Value, BASE_Value;
 public:
 	Pass2Reader();
@@ -94,6 +106,10 @@ public:
 	string ValueOfByte();
 
 	string OP_Code_Value(string,string);
+	string OP_Code_Value(string);
+	string RegisterValue(string);
+	string SizeOfOPCode(string OP_Code);
+	bool Confirm_if_Start();
 	
 	string Flags_Value(string,string);
 	
@@ -108,6 +124,11 @@ public:
 	string SearchInSymTab_ReturnAddress(string);
 
 	bool SearchInSymTab_ifPresent(string VARIABLE);
+
+	bool CheckIfinEXTREF(string word);
+
+	void OBJECT_PROGRAM();
+	string SizeOfCSECT(int);
 	
 	
 

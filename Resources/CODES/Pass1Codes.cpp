@@ -3,7 +3,7 @@
 #include<string>
 #include<vector>
 #include <sstream>
-
+using namespace std;
 int hexadecimalToDecimal(std::string hexVal)
 {
 	int len = hexVal.size();
@@ -153,40 +153,45 @@ std::string decToHexa(int n)
 }
 std::string decToHexaString(int n)
 {
+	string ans = "";
 
 	// ans string to store hexadecimal number
-	std::string ans = "";
-	while (n != 0) {
-		// remainder variable to store remainder
-		int rem = 0;
+	if (n >= 0) {
+		while (n != 0) {
+			// remainder variable to store remainder
+			int rem = 0;
 
-		// ch variable to store each character
-		char ch;
-		// storing remainder in rem variable.
-		rem = n % 16;
+			// ch variable to store each character
+			char ch;
+			// storing remainder in rem variable.
+			rem = n % 16;
 
-		// check if temp < 10
-		if (rem < 10) {
-			ch = rem + 48;
+			// check if temp < 10
+			if (rem < 10) {
+				ch = rem + 48;
+			}
+			else {
+				ch = rem + 55;
+			}
+
+			// updating the ans string with the character variable
+			ans += ch;
+			n = n / 16;
 		}
-		else {
-			ch = rem + 55;
+
+		// reversing the ans string to get the final result
+		int i = 0, j = ans.size() - 1;
+		while (i <= j)
+		{
+			std::swap(ans[i], ans[j]);
+			i++;
+			j--;
 		}
-
-		// updating the ans string with the character variable
-		ans += ch;
-		n = n / 16;
 	}
-
-	// reversing the ans string to get the final result
-	int i = 0, j = ans.size() - 1;
-	while (i <= j)
-	{
-		std::swap(ans[i], ans[j]);
-		i++;
-		j--;
+	else {
+		n *= -1;
+		ans =decToHexaString( hexadecimalToDecimal("FFF") - hexadecimalToDecimal(decToHexaString(n))+1);
 	}
-
 	return ans;
 }
 
